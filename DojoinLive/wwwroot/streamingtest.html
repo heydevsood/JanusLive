@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Dojoin-Janus WebRTC Server: Watch Live</title>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.4.0/adapter.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script> -->
+	<script src="js/signalr/dist/browser/signalr.js"></script>
+	<script type="text/javascript" src="janus.js"></script>
+	<script type="text/javascript" src="streamingtest.js"></script>
+	<script>
+		$(function () {
+			$(".navbar-static-top").load("navbar.html", function () {
+				$(".navbar-static-top li.dropdown").addClass("active");
+				$(".navbar-static-top a[href='streamingtest.html']").parent().addClass("active");
+			});
+			$(".footer").load("footer.html");
+		});
+	</script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css"
+		type="text/css" />
+	<link rel="stylesheet" href="css/demo.css" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" />
+</head>
+
+<body>
+
+	<nav class="navbar navbar-default navbar-static-top">
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header">
+					<h1>Watch Live Stream
+						<button class="btn btn-default" autocomplete="off" id="start">Start</button>
+					</h1>
+				</div>
+				<div class="container" id="details">
+					<div class="row">
+
+					</div>
+				</div>
+				<div class="container hide" id="streams">
+					<div class="col-md-6">
+						<div class="row">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">Streams <i id="update-streams" class="fa fa-refresh"
+											title="Update list of streams" style="cursor: pointer;"></i></h3>
+								</div>
+
+								<div class="panel-body" id="list">
+									<div class="btn-group btn-group-sm">
+										<div>
+											<input type="text" placeholder="Enter Name" name="viewerName"
+												id="viewerName">
+											<button class="btn btn-primary" autocomplete="off" id="accept">Enter
+												Name</button>
+										</div>
+										<button class="btn btn-primary" autocomplete="off" id="watch">Watch or
+											Listen</button>
+										<div class="btn-group btn-group-sm">
+											<button autocomplete="off" id="streamset"
+												class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+												Streams list<span class="caret"></span>
+											</button>
+											<ul id="streamslist" class="dropdown-menu" role="menu">
+											</ul>
+										</div>
+										<br>
+										<br>
+										<h3 class="panel-title">Recordings <i id="update-rec" class="fa fa-refresh"
+											title="Update list of Recordings" style="cursor: pointer;"></i></h3>
+										<button class="btn btn-success" autocomplete="off" id="play">Play
+											Recording</button>
+										<div class="btn-group btn-group-sm">
+											<button autocomplete="off" id="recset"
+												class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+												style="width: 100%">
+												Recordings list<span class="caret"></span>
+											</button>
+											<ul id="recslist" class="dropdown-menu" role="menu"
+												style="max-height: 300px; overflow: auto;">
+											</ul>
+										</div>
+										<div id="div-comment" class="div-comment hide">
+											<input type="text" placeholder="Comment" name="newComment" id="newComment">
+											<button class="btn btn-primary" autocomplete="off"
+												id="sendComment">Comment</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row hide" id="info">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title"><i class="fa fa-info-circle"></i> Live Users:</h3>
+								</div>
+								<div class="panel-body">
+									<ul id="metadata">
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Stream
+									<span class="label label-info hide" id="status"></span>
+									<span class="label label-primary hide" id="curres"></span>
+									<span class="label label-info hide" id="curbitrate"></span>
+								</h3>
+							</div>
+							<div class="panel-body" id="stream"></div>
+						</div>
+					</div>
+					<!-- Adding for Recorded -->
+					<div class="col-md-6" id="video">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title"><span id="videotitle">Recorded Streams</span> <button class="btn-xs btn-danger pull-right" autocomplete="off" id="stoprecorded">Stop</button></h3>
+							</div>
+							<div class="panel-body" id="videobox"></div>
+						</div>
+					</div>
+					<!--  -->
+					<div class="col-md-6 hide" id="commentbox">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Comments: <span class="label label-primary"
+										id="commentCount"></span></h3>
+							</div>
+							<div class="panel-body" id="comments">
+								<ul id="commentlist" class="commentlist">
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr>
+		<div class="footer">
+		</div>
+	</div>
+
+</body>
+
+</html>
