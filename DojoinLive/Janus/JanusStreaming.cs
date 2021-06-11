@@ -4,12 +4,12 @@ using RestSharp.Validation;
 using System.Collections.Generic;
 using System.Threading;
 using System.Dynamic;
-using DojoinLive.Models;
+using JanusLive.Models;
 using System.Linq;
 using System.Text;
 using System;
 
-namespace DojoinLive.Janus
+namespace JanusLive.Janus
 {
     public partial class JanusRestClient
     {

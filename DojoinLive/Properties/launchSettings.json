@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DojoinLive": {
+    "JanusLive": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

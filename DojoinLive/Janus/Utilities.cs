@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DojoinLive.Janus
+namespace JanusLive.Janus
 {
     public class MTSafeRefCounter
     {

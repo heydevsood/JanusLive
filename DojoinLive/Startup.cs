@@ -1,4 +1,4 @@
-using DojoinLive.Hubs;
+using JanusLive.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DojoinLive
+namespace JanusLive
 {
     public class Startup
     {
@@ -31,7 +31,7 @@ namespace DojoinLive
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DojoinLive", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "JanusLive", Version = "v1" });
             });
 
             services.AddCors(options =>
@@ -54,7 +54,7 @@ namespace DojoinLive
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DojoinLive v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JanusLive v1"));
             }
 
             app.UseHttpsRedirection();

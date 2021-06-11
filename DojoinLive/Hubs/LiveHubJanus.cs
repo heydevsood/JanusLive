@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DojoinLive.Models;
-using DojoinLive.Janus;
+using JanusLive.Models;
+using JanusLive.Janus;
 
-namespace DojoinLive.Hubs
+namespace JanusLive.Hubs
 {
 public class LiveHub : Hub
     {

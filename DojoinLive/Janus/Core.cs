@@ -8,9 +8,9 @@ using RestSharp.Deserializers;
 using RestSharp.Extensions;
 using System.Threading;
 using System.Dynamic;
-using DojoinLive.Models;
+using JanusLive.Models;
 
-namespace DojoinLive.Janus
+namespace JanusLive.Janus
 {
     public partial class JanusRestClient
     {
